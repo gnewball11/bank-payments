@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14.5
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+  bank-payment:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5555:80"
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+      PGADMIN_DEFAULT_PASSWORD: postgres

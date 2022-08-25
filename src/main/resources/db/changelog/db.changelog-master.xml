@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="202208251805_DDL" author="Garry Newball">
+        <createTable tableName="customer">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="customer_id_pk"/>
+            </column>
+            <column name="name" type="text"/>
+            <column name="last_name" type="text"/>
+            <column name="email" type="text"/>
+        </createTable>
+        <createTable tableName="card">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="card_id_pk" />
+            </column>
+            <column name="type" type="text"/>
+            <column name="issue_date" type="timestamptz"/>
+            <column name="expiration_date" type="timestamptz"/>
+        </createTable>
+        <createTable tableName="account">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="account_id_pk" />
+            </column>
+            <column name="customer_id" type="bigint">
+                <constraints foreignKeyName="customer_id_fk" referencedTableName="customer" referencedColumnNames="id"/>
+            </column>
+            <column name="debit_card_id" type="bigint">
+                <constraints foreignKeyName="debit_card_id_fk" referencedTableName="card" referencedColumnNames="id"/>
+            </column>
+            <column name="credit_card_id" type="bigint">
+                <constraints foreignKeyName="credit_card_id_fk" referencedTableName="card" referencedColumnNames="id"/>
+            </column>
+            <column name="balance" type="double">
+            </column>
+        </createTable>
+
+        <createTable tableName="transaction">
+            <column name="id" type="serial" >
+                <constraints primaryKey="true" primaryKeyName="transaction_id_pk" />
+            </column>
+            <column name="origin_account_id" type="bigint">
+                <constraints foreignKeyName="transaction_origin_account_id_fk" referencedTableName="account" referencedColumnNames="id"/>
+            </column>
+            <column name="destination_account_id" type="bigint">
+                <constraints foreignKeyName="transaction_destination_account_id_fk" referencedTableName="account" referencedColumnNames="id"/>
+            </column>
+            <column name="card_id" type="bigint">
+                <constraints foreignKeyName="card_id_fk" referencedTableName="card" referencedColumnNames="id"/>
+            </column>
+            <column name="type" type="text"/>
+            <column name="balance_before_transaction" type="double"/>
+            <column name="new_balance" type="double"/>
+            <column name="amount" type="double"/>
+            <column name="fee" type="double"/>
+            <column name="time" type="timestamptz"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet  author="Garry Newball"  id="202208251830_customer_creation">
+        <insert  tableName="customer">
+            <column name="id"  value="1"/>
+            <column name="name" value="Ismael"/>
+            <column name="last_name" value="Rivera"/>
+            <column name="email" value="ismael.rivera@gmail.com"/>
+        </insert>
+        <insert  tableName="customer">
+            <column name="id"  value="2"/>
+            <column name="name" value="Hector"/>
+            <column name="last_name" value="Lavoe"/>
+            <column name="email" value="hector.lavoe@gmail.com"/>
+        </insert>
+        <insert  tableName="customer">
+            <column name="id"  value="3"/>
+            <column name="name" value="Cheo"/>
+            <column name="last_name" value="Feliciano"/>
+            <column name="email" value="cheo.feliciano@gmail.com"/>
+        </insert>
+    </changeSet>
+
+    <changeSet  author="Garry Newball"  id="202208251830_card_creation">
+        <insert  tableName="card">
+            <column name="id"  value="4560320405986503"/>
+            <column name="type" value="DEBIT"/>
+            <column name="issue_date" value="2022-08-25"/>
+            <column name="expiration_date" value="2027-08-25"/>
+        </insert>
+        <insert  tableName="card">
+            <column name="id"  value="4389349593858382"/>
+            <column name="type" value="CREDIT"/>
+            <column name="issue_date" value="2022-08-25"/>
+            <column name="expiration_date" value="2027-08-25"/>
+        </insert>
+        <insert  tableName="card">
+            <column name="id"  value="9201958382818349"/>
+            <column name="type" value="CREDIT"/>
+            <column name="issue_date" value="2022-08-25"/>
+            <column name="expiration_date" value="2027-08-25"/>
+        </insert>
+        <insert  tableName="card">
+            <column name="id"  value="4560378905986503"/>
+            <column name="type" value="DEBIT"/>
+            <column name="issue_date" value="2022-08-25"/>
+            <column name="expiration_date" value="2027-08-25"/>
+        </insert>
+        <insert  tableName="card">
+            <column name="id"  value="4389349065858382"/>
+            <column name="type" value="CREDIT"/>
+            <column name="issue_date" value="2022-08-25"/>
+            <column name="expiration_date" value="2027-08-25"/>
+        </insert>
+    </changeSet>
+
+
+    <changeSet  author="Garry Newball"  id="202208251900_account_creation">
+        <insert  tableName="account">
+            <column name="id"  value="3452695843960323"/>
+            <column name="customer_id" value="1"/>
+            <column name="debit_card_id" value="4560320405986503"/>
+            <column name="credit_card_id" value="4389349593858382"/>
+            <column name="balance" value="300563.76"/>
+        </insert>
+        <insert  tableName="account">
+            <column name="id"  value="5471234754393245"/>
+            <column name="customer_id" value="2"/>
+            <column name="debit_card_id" value="4560378905986503"/>
+            <column name="credit_card_id" value="9201958382818349"/>
+            <column name="balance" value="738293.89"/>
+        </insert>
+        <insert  tableName="account">
+            <column name="id"  value="9726344030384488"/>
+            <column name="customer_id" value="3"/>
+            <column name="credit_card_id" value="4389349065858382"/>
+            <column name="balance" value="173345.34"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
