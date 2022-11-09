@@ -8,7 +8,7 @@
 		<version>2.7.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>nl.rabobank</groupId>
+	<groupId>nl.bank</groupId>
 	<artifactId>payment</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>payment</name>
